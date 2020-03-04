@@ -1,4 +1,5 @@
 const dbConfig= require("../config/database");
+const mysql= require("mysql");
 
 class Database{
     dbConfig;
@@ -19,12 +20,12 @@ class Database{
                 console.log(err);
             }
             else{
-                this.db=conn;
                 console.log("connected!");
             }
         });
+        this.db= conn;
     }
-    static getDb(){
+    getDb(){
         if(!this.db){
             this.connect();
         }
@@ -32,4 +33,4 @@ class Database{
     }
 }
 
-module.exports=new Database().getDb();
+module.exports= new Database().getDb();
