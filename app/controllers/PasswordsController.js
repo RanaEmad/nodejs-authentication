@@ -1,8 +1,7 @@
 const Password= require("../models/Password");
 class PasswordsController{
-    app;
-    constructor(app){
-        this.app=app;
+    
+    constructor(){
     }
 
     index(req,res){
