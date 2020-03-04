@@ -1,5 +1,6 @@
 const User= require("../models/Auth");
 const passport= require("../config/passport");
+const jwt= require("jsonwebtoken");
 
 class AuthController{
     
@@ -12,6 +13,8 @@ class AuthController{
             if (!user) { return res.json({"msg":"not found"}); }
             req.logIn(user, function(err) {
             if (err) { return next(err); }
+            const body = { id : user.id, email : user.email };
+            user.token=jwt.sign({user:body},process.env.JWT_SECRET);
             return res.json(user);
             });
         })(req, res, next);
