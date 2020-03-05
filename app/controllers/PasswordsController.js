@@ -1,7 +1,9 @@
 const Password= require("../models/Password");
+const Validator= require("validatorjs");
 class PasswordsController{
-
+    validationRules;
     constructor(){
+        this.setValidationRules();
     }
 
     index(req,res){
@@ -114,6 +116,19 @@ class PasswordsController{
         .catch((err)=>{
             res.json({"msg":"service unavailable"});
         });
+    }
+
+    setValidationRules(){
+        this.validationRules= {
+            "store":{
+                type:"required",
+                value:"required"
+            },
+            "update":{
+                type:"required",
+                value:"required"
+            }
+        };
     }
 
 }

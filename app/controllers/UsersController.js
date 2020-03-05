@@ -4,7 +4,9 @@ const saltRounds=10;
 
 class UsersController{
     
+    validationRules;
     constructor(){
+        this.setValidationRules();
     }
 
     store(req,res){
@@ -15,19 +17,53 @@ class UsersController{
         };
         User.create(data)
         .then((result)=>{
-            res.json({"id":result.insertId});
+            res.status(201).json({"id":result.insertId});
+        })
+        .catch((err)=>{
+            res.json({"msg":"service unavailable"});
         });
     }
 
     update(req,res){
-        const data= {
-            "name":req.body.name,
-            "email":req.body.email
-        };
-        User.update(req.params.id,data)
-        .then((result)=>{
-            res.json({"id":req.params.id});
+        User.findById(req.user.id)
+        .then((exists)=>{
+            if(exists==false){
+                res.status(400).json({"msg":"resource not found"});
+            }
+            else{
+                
+                const data= {
+                    "name":req.body.name,
+                    "email":req.body.email
+                };
+                User.update(req.params.id,data)
+                .then((result)=>{
+                    res.status(200).json({"id":req.params.id, "name":data.name,"email":data.email});
+                })
+                .catch((err)=>{
+                    res.json({"msg":"service unavailable"});
+                });
+
+            }
+        })
+        .catch((err)=>{
+            res.json({"msg":"service unavailable"});
         });
+
+    }
+
+    setValidationRules(){
+        this.validationRules={
+            "store":{
+                "name":"required",
+                "email":"required|email",
+                "password":"required|between:6,15"
+            },
+            "update":{
+                "name":"required",
+                "email":"required|email"
+            }
+        };
     }
 }
 
