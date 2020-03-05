@@ -6,21 +6,36 @@ const passwordRoutes=require("./app/routes/passwordRoutes");
 const userRoutes=require("./app/routes/userRoutes");
 const authRoutes=require("./app/routes/authRoutes");
 
-const app= express();
+class App{
+    app;
+    constructor(){
+        this.app=express();
+        this.config();
+        this.routes();
+        this.listen();
+    }
+    config(){
+        this.app.use(bodyParser.urlencoded({extended:true}));
+        this.app.use(bodyParser.json());
+        this.app.use(passport.initialize());
+        this.app.use(passport.session());
+    }
 
-app.use(bodyParser.urlencoded({extended:true}));
-app.use(bodyParser.json());
-app.use(passport.initialize());
-app.use(passport.session());
+    routes(){
+        this.app.get("/",(req,res)=>{
+            res.send("Welcome!");
+        });
+        this.app.use("/api/passwords",passwordRoutes);
+        this.app.use("/api/users",userRoutes);
+        this.app.use("/api/auth",authRoutes);
+    }
 
-app.get("/",(req,res)=>{
-    res.send("Welcome!");
-});
+    listen(){
+        this.app.listen(config.port,()=>{
+            console.log(`${config.appName} up and running on port ${config.port}...`);
+        });
+    }
 
-app.use("/api/passwords",passwordRoutes);
-app.use("/api/users",userRoutes);
-app.use("/api/auth",authRoutes);
+}
 
-app.listen(config.port,()=>{
-    console.log(`${config.appName} up and running on port ${config.port}...`);
-});
+module.exports=App;
