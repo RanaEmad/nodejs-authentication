@@ -1,11 +1,11 @@
 const Password= require("../models/Password");
 class PasswordsController{
-    
+
     constructor(){
     }
 
     index(req,res){
-        Password.findAll()
+        Password.findUserPasswords(req.user.id)
         .then((results)=>{
             res.json(results);
         });
@@ -20,7 +20,7 @@ class PasswordsController{
 
     store(req,res){
         const data= {
-            "user_id":req.body.user_id,
+            "user_id":req.user.id,
             "type":req.body.type,
             "value":req.body.value
         };
