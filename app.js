@@ -1,5 +1,4 @@
 const express= require("express");
-const path = require("path");
 const bodyParser= require("body-parser");
 const config= require("./app/config/config");
 const passport=require("./app/config/passport");
