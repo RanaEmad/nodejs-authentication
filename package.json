@@ -2,7 +2,7 @@
   "name": "nodejs-authentication",
   "version": "1.0.0",
   "description": "Node.js authentication",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "start": "node -r dotenv/config server.js",
     "dev": "nodemon -r dotenv/config server.js",
